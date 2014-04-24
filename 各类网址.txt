@@ -21,3 +21,6 @@ SurfaceView闪烁问题的根源-双缓存机制
 
 Android游戏开发---2D游戏中背景的绘制
 http://blog.csdn.net/xn4545945/article/details/8610005
+
+Git 用户指南
+http://blog.csdn.net/zhangkongzhongyun/article/details/8046932
