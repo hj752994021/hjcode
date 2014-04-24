@@ -1,0 +1,23 @@
+提高android应用的效率--主要讲解listview的优化
+http://stackoverflow.com/questions/11931742/loading-large-images-without-outofmemoryerror
+
+Eclipse最常用快捷键总结
+http://blog.csdn.net/oshirdey/article/details/23992005
+
+安卓xmlns命名空间
+http://blog.chinaunix.net/uid-26885609-id-3472233.html 
+
+由于服务器出错，翻译失败
+http://zhidao.baidu.com/question/214639752.html?fr=qrl&index=1&qbl=topic_question_1&word=google%B7%AD%D2%EB%20%C9%E8%D6%C3
+翻译浏览器按钮添加到浏览器的链接工具栏
+http://zhidao.baidu.com/link?url=G11TzVsEQ_Kg1bBUn4Uvfj46vuJV6Abhrcz5pwj1TQrRoHNRzO5turSSVniuywmLdnhBBAh7zSfgK1zdjLq4__
+
+
+Android SurfaceView 绘图覆盖刷新及脏矩形刷新方法
+http://www.cnblogs.com/SkyD/archive/2010/11/08/1871423.html
+
+http://blog.csdn.net/tobacco5648/article/details/8261749
+SurfaceView闪烁问题的根源-双缓存机制
+
+Android游戏开发---2D游戏中背景的绘制
+http://blog.csdn.net/xn4545945/article/details/8610005
