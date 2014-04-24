@@ -22,5 +22,7 @@ SurfaceView闪烁问题的根源-双缓存机制
 Android游戏开发---2D游戏中背景的绘制
 http://blog.csdn.net/xn4545945/article/details/8610005
 
-Git 用户指南
-http://blog.csdn.net/zhangkongzhongyun/article/details/8046932
+GIT入门：如何用命令行同步代码
+http://blog.csdn.net/esrichinacd/article/details/17645951 链到下面
+Git操作指南（2） —— Git Gui for Windows的建库、克隆（clone）、上传（push）、下载（pull）、合并
+http://hi.baidu.com/mvp_xuan/item/789262104e758f3bb93180d2
