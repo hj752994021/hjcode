@@ -32,8 +32,10 @@ public class GameSurfaceView extends SurfaceView implements Callback, Runnable {
 	private Thread thread;
 	private Canvas canvas;
 	private Bitmap background;
-	private int dy,dy2 = -480;
+	private int dx,dx2 = -480;
 	private Rect srcRect,destRect,destRect2;
+	private Rect barrier1,barrier2,barrier3,barrier4;
+	private int gsvHeight,gsvWidth;
 	public GameSurfaceView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -47,9 +49,13 @@ public class GameSurfaceView extends SurfaceView implements Callback, Runnable {
 		paint.setAntiAlias(true);
 		paint.setColor(Color.RED);
 		background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
-		srcRect = new Rect(0, 0, 400, 800);
-		destRect = new Rect(0, dy, 480, 800);
-		destRect2 = new Rect(0, dy2, 480, 0);
+		srcRect = new Rect(0, 0, 480, 800);
+		destRect = new Rect(dx, 0, 480, 800);
+		destRect2 = new Rect(dx2, 0, 0, 800);
+		barrier1 = new Rect(50, 0, 100, 200);
+		barrier2 = new Rect(200, 0, 250, 200);
+		barrier3 = new Rect(50, 600, 100, 800);
+		barrier4 = new Rect(200, 600, 250, 800);
 	}
 	
 	public GameSurfaceView(Context context, AttributeSet attrs) {
@@ -61,20 +67,24 @@ public class GameSurfaceView extends SurfaceView implements Callback, Runnable {
 		top=(int) (position-50*time+0.5*7*Math.pow(time, 2));
 		System.out.println("top="+top+" time="+time);
 		canvas = holder.lockCanvas();
-		dy+=3;
-		dy2+=3;
+		dx+=3;
+		dx2+=3;
 		//canvas.drawColor(Color.GRAY);
 		//paint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
-		destRect.set(0, dy, 480, 800+dy);
-		destRect2.set(0, dy2, 480, 800+dy2);
+		destRect.set(dx, 0, 480+dx, 800);
+		destRect2.set(dx2, 0, 480+dx2, 800);
 		canvas.drawBitmap(background, srcRect, destRect, paint);
 		canvas.drawBitmap(background, srcRect, destRect2, paint);
 		canvas.drawCircle(150, top, 20, paint);
-		if(dy>=480){
-			dy=-480;
+		canvas.drawRect(barrier1, paint);
+		canvas.drawRect(barrier2, paint);
+		canvas.drawRect(barrier3, paint);
+		canvas.drawRect(barrier4, paint);
+		if(dx>=480){
+			dx=-480;
 		}
-		if(dy2>=480){
-			dy2=-480;
+		if(dx2>=480){
+			dx2=-480;
 		}
 		holder.unlockCanvasAndPost(canvas);
 		if(top>getHeight()){
@@ -88,17 +98,14 @@ public class GameSurfaceView extends SurfaceView implements Callback, Runnable {
 		while(time<150&&bExit==true){
 			draw(time);
 			time=(float) (time+1);
-/*			try {
-				Thread.sleep(33);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
 		}
 	}
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
+		//初始值必须放到这里才行, 因为SurfaceView创建成功后才能获取高宽 
+		gsvHeight = getHeight();
+		gsvWidth = getWidth();
 		thread = new Thread(this);
 		thread.start();
 		this.setOnKeyListener(new OnKeyListener() {

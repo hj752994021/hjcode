@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 public class MainActivity extends Activity {
@@ -22,6 +24,7 @@ public class MainActivity extends Activity {
 		//View view = View.inflate(this, R.layout.activity_main, null);
 		gameSurfaceView = new GameSurfaceView(this);
 		setContentView(gameSurfaceView);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		gameSurfaceView.setFocusable(true);
 /*		gameSurfaceView = (GameSurfaceView) findViewById(R.id.sv_fb);
 		SurfaceHolder holder = gameSurfaceView.getHolder();
