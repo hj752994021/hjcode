@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="xhjdevplat"
+  id="myeclipse.1418817663119"
+  context-root="/xhjdevplat"
+  j2ee-spec="6.0"
+  archive="xhjdevplat.war">
+  <attributes>
+    <attribute name="webrootdir" value="webapp" />
+  </attributes>
+</project-module>
+
