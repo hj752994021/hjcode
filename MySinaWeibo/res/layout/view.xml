@@ -24,18 +24,20 @@
 
         <ImageButton
             android:id="@+id/ib_goback"
-            android:layout_width="20dip"
-            android:layout_height="20dip"
+            android:onClick="goback"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
             android:layout_toLeftOf="@+id/ib_gohome"
             android:src="@drawable/goback" />
 
         <ImageButton
             android:id="@+id/ib_gohome"
-            android:layout_width="20dip"
-            android:layout_height="20dip"
+            android:onClick="gohome"
+            android:layout_width="65dip"
+            android:layout_height="50dip"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/home" />
+            android:src="@drawable/imagebutton_seletor_home" />
     </RelativeLayout>
 
     <LinearLayout
@@ -46,7 +48,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp" >
+        android:layout_height="wrap_content" >
 
         <ImageView
             android:id="@+id/iv_user_icon"
@@ -62,15 +64,15 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/iv_user_icon"
             android:paddingTop="15dp"
-            android:text="李嘉欣Michele"
-            android:textSize="20sp" />
+            android:text="唐嫣"
+            android:textSize="30sp" />
 
-        <ImageButton
+<!--         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/hello_world"
-            android:src="@drawable/sjjt" />
+            android:src="@drawable/sjjt" /> -->
     </RelativeLayout>
 
     <RelativeLayout
@@ -119,18 +121,18 @@
                 android:gravity="center" >
 
                 <Button
-                    android:id="@+id/bt_gz"
+                    android:id="@+id/bt_zf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="        关注(1231)"
+                    android:text="转发(1231)"
                     android:textColor="#3882b8"
                     android:textSize="15sp" />
 
                 <Button
-                    android:id="@+id/bt_bl"
+                    android:id="@+id/bt_pl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="        评论(31)"
+                    android:text="评论(31)"
                     android:textColor="#3882b8"
                     android:textSize="15dp" />
             </TableRow>

@@ -3,11 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".MainActivity" >
 
-    <com.hj.flappybird.GameSurfaceView
-        android:id="@+id/sv_fb"
+    <Button
+        android:id="@+id/bt_startgame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:hint="点击开始游戏"
+        android:onClick="startGame" />
 
 </LinearLayout>

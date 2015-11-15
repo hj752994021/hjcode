@@ -19,17 +19,17 @@
 
         <RelativeLayout
             android:id="@+id/iconBtn"
-            android:layout_width="90dp"
+            android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_above="@+id/selectLayout"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/icon_selector" >
+            android:background="@android:color/white" >
 
             <ImageView
                 android:id="@+id/icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:layout_centerInParent="true"
                 android:contentDescription="@string/hello_world"
@@ -76,7 +76,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="100dp"
             android:layout_alignParentBottom="true"
             android:background="#BB768e95" >
 
@@ -85,31 +85,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
                 android:layout_marginTop="3dp"
-                android:gravity="center"
                 android:orientation="vertical" >
 
                 <ImageButton
                     android:id="@+id/ib_add_account"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/add_selector" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/imagebutton_seletor_add" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="添加账号"
                     android:textColor="#ffffff"
-                    android:textSize="12dp" />
+                    android:textSize="12sp" />
             </LinearLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@id/ll_add_account"
-                android:background="#f000" />
 
             <LinearLayout
                 android:id="@+id/ll_exit_soft"
@@ -117,52 +109,45 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="3dp"
-                android:gravity="center"
                 android:orientation="vertical" >
 
                 <ImageButton
                     android:id="@+id/ib_exit_soft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/exit_selector" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/imagebutton_seletor_exit"
+                    android:contentDescription="@string/hello_world" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="退出软件"
                     android:textColor="#ffffff"
-                    android:textSize="12dp" />
+                    android:textSize="12sp" />
             </LinearLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@id/ll_exit_soft"
-                android:background="#f000" />
 
             <LinearLayout
                 android:id="@+id/ll_del_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
                 android:layout_marginTop="3dp"
-                android:gravity="center"
                 android:orientation="vertical" >
 
                 <ImageButton
                     android:id="@+id/ib_del_account"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/del_selector" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/imagebutton_seletor_del" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="删除帐号"
                     android:textColor="#ffffff"
-                    android:textSize="12dp" />
+                    android:textSize="12sp" />
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

@@ -12,7 +12,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -21,19 +20,22 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hj.mysinaweibo.commonutil.AsyncImageLoader;
 import com.hj.mysinaweibo.commonutil.AsyncImageLoader.ImageCallBack;
+import com.hj.mysinaweibo.commonutil.AsynchTashImageLoader;
 import com.hj.mysinaweibo.commonutil.ConfigHelper;
 import com.hj.mysinaweibo.commonutil.HttpApiHelper;
 import com.hj.mysinaweibo.model.UserInfo;
 import com.hj.mysinaweibo.model.WeiBoInfo;
 
-public class HomeActivity extends Activity implements OnClickListener {
+public class HomeActivity extends Activity implements OnClickListener, OnItemClickListener {
 
 	private List<WeiBoInfo> weiBoInfos;
 	private UserInfo userInfo;
@@ -41,29 +43,46 @@ public class HomeActivity extends Activity implements OnClickListener {
 	private String weiboStr;
 	private ImageButton ib_wite_weibo;
 	private ImageButton ib_refresh;
-
+	private WeiBoAdapter adapter;
+	private AsynchTashImageLoader tashImageLoader;
+	private LinearLayout ll_loading;
+	private Button bt_foot;
+	private ListView lv_message;
+	private int pageSize=10;
+	private int pageNow=1;
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			getWeiBoInfos(weiboStr);
-			if (weiBoInfos != null) {
-				WeiBoAdapter adapter = new WeiBoAdapter();
-				ListView lv_message = (ListView) findViewById(R.id.lv_message);
-
-				lv_message.setAdapter(adapter);
-				lv_message.setOnItemClickListener(new OnItemClickListener() {
-
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						System.out.println("点了一项");
-						Intent intent = new Intent(HomeActivity.this,
-								ViewActivity.class);
-						intent.putExtra("weiboId", weiBoInfos.get(position)
-								.getId());
-						startActivity(intent);
-					}
-				});
+			switch (msg.what) {
+			case 1:
+				System.out.println("首次进入");
+				//首次进入
+				weiBoInfos = stringToWeiBoInfos(weiboStr);
+				if (weiBoInfos != null) {
+					lv_message.addFooterView(bt_foot);
+					lv_message.setAdapter(adapter);
+					lv_message.removeFooterView(bt_foot);
+					ll_loading.setVisibility(View.INVISIBLE);
+				}
+				break;
+			case 2:
+				System.out.println("刷新");
+				//刷新
+				weiBoInfos.addAll(stringToWeiBoInfos(weiboStr));
+				ll_loading.setVisibility(View.INVISIBLE);
+				lv_message.removeFooterView(bt_foot);
+				adapter.notifyDataSetChanged();
+				break;
+			case 3:
+				System.out.println("加载页");
+				//加载页
+				weiBoInfos.addAll(stringToWeiBoInfos(weiboStr));
+				ll_loading.setVisibility(View.INVISIBLE);
+				adapter.notifyDataSetChanged();
+				lv_message.removeFooterView(bt_foot);
+				break;
+			default:
+				break;
 			}
 		};
 	};
@@ -74,9 +93,16 @@ public class HomeActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.home);
 		ib_wite_weibo = (ImageButton) findViewById(R.id.ib_wite_weibo);
 		ib_refresh = (ImageButton) findViewById(R.id.ib_refresh);
+		ll_loading = (LinearLayout) findViewById(R.id.ll_loading);
+		bt_foot = (Button) getLayoutInflater().inflate(R.layout.list_foot, null);
+		lv_message = (ListView) findViewById(R.id.lv_message);
 		ib_refresh.setOnClickListener(this);
 		ib_wite_weibo.setOnClickListener(this);
-		loadList();
+		tashImageLoader = new AsynchTashImageLoader();
+		adapter = new WeiBoAdapter();
+		getWeiboStrByHttp(pageNow,pageSize,1);
+		lv_message.setOnItemClickListener(this);
+		bt_foot.setOnClickListener(this);
 	}
 
 	@Override
@@ -87,15 +113,35 @@ public class HomeActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 			break;
 		case R.id.ib_refresh:
-
+			weiBoInfos.clear();
+			pageNow=1;
+			getWeiboStrByHttp(pageNow, pageSize,2);
 			break;
-
+		case R.id.bt_foot:
+			pageNow++;
+			getWeiboStrByHttp(pageNow, pageSize,3);
+			break;
 		default:
 			break;
 		}
 	}
-
-	private void loadList() {
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		System.out.println("点了一项");
+		Intent intent = new Intent(HomeActivity.this, ViewActivity.class);
+		intent.putExtra("weiboId", weiBoInfos.get(position)
+				.getId());
+		startActivity(intent);
+	}
+	/**
+	 * 
+	 * @param pageNum
+	 * @param pageSize
+	 * @param flag 1首页，2刷新，3为加载其它页
+	 */
+	private void getWeiboStrByHttp(int pageNum,int pageSize,final int flag) {
+		ll_loading.setVisibility(View.VISIBLE);
 		if (ConfigHelper.currentUser != null) {
 			userInfo = ConfigHelper.currentUser;
 			// 显示当前用户名称
@@ -105,20 +151,23 @@ public class HomeActivity extends Activity implements OnClickListener {
 			final ContentValues values = new ContentValues();
 			values.put("access_token", userInfo.getAccessToken());
 			values.put("uid", userInfo.getUserId());
+			values.put("page", pageNum);
+			values.put("count", pageSize);
 			new Thread() {
 				public void run() {
 					weiboStr = HttpApiHelper
 							.getApiData(
 									"https://api.weibo.com/2/statuses/friends_timeline.json",
 									values);
-					handler.sendEmptyMessage(1);
+					handler.sendEmptyMessage(flag);
 				};
 			}.start();
 		}
 
 	}
 
-	private void getWeiBoInfos(String str) {
+	private List<WeiBoInfo> stringToWeiBoInfos(String str) {
+		List<WeiBoInfo> weiBoInfos = new ArrayList<WeiBoInfo>();
 		if (!"".equals(str)) {
 			try {
 				JSONObject obj = new JSONObject(str);
@@ -164,8 +213,8 @@ public class HomeActivity extends Activity implements OnClickListener {
 				e.printStackTrace();
 			}
 		}
+		return weiBoInfos;
 	}
-
 	private String ConvertTime(Date oldDate) {
 		Date nowDate = new Date();
 		Long timeSub = (nowDate.getTime() - oldDate.getTime()) / 1000;
@@ -209,11 +258,13 @@ public class HomeActivity extends Activity implements OnClickListener {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View view;
 			WeiBoInfo weiBoInfo = weiBoInfos.get(position);
-			AsyncImageLoader asyncImageLoader = new AsyncImageLoader();
+			//AsyncImageLoader asyncImageLoader = new AsyncImageLoader();
 			if (convertView == null) {
+				System.out.println("convertView为空："+position);
 				view = View.inflate(HomeActivity.this, R.layout.weibo, null);
 			} else {
 				view = convertView;
+				System.out.println("convertView不为空："+position);
 			}
 			ImageView iv_weibo_icon = (ImageView) view
 					.findViewById(R.id.iv_weibo_icon);
@@ -233,21 +284,21 @@ public class HomeActivity extends Activity implements OnClickListener {
 			} else {
 				iv_have_photo.setVisibility(View.INVISIBLE);
 			}
-			Drawable cachedImage = asyncImageLoader.loadDrawable(
-					weiBoInfo.getUserIcon(), iv_weibo_icon,
-					new ImageCallBack() {
+/*			asyncImageLoader.loadDrawable(weiBoInfo.getUserIcon(),
+					iv_weibo_icon, new ImageCallBack() {
 						@Override
 						public void imageLoaded(Drawable imageDrawable,
 								ImageView imageView) {
 							imageView.setImageDrawable(imageDrawable);
 						}
-					});
-			if (cachedImage != null) {
-				iv_weibo_icon.setImageDrawable(cachedImage);
+					});*/
+			tashImageLoader.loadDrawable(weiBoInfo.getUserIcon(), iv_weibo_icon);
+			if((position+1)%pageSize==0?(position+1)/pageSize==pageNow:false){
+				System.out.println("页眉");
+				lv_message.addFooterView(bt_foot);
 			}
 			return view;
 		}
 
 	}
-
 }

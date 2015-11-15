@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Process;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -38,9 +39,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private ImageButton login;
 	private ListView list;
 
-	private LinearLayout ll_add_account;
-	private LinearLayout ll_exit_soft;
-	private LinearLayout ll_del_account;
+	private ImageButton ib_add_account;
+	private ImageButton ib_exit_soft;
+	private ImageButton ib_del_account;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +51,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 		iconSelect = (EditText) findViewById(R.id.iconSelect);
 		icon = (ImageView) findViewById(R.id.icon);
 		login = (ImageButton) findViewById(R.id.login);
-		ll_add_account = (LinearLayout) findViewById(R.id.ll_add_account);
-		ll_exit_soft = (LinearLayout) findViewById(R.id.ll_exit_soft);
-		ll_del_account = (LinearLayout) findViewById(R.id.ll_del_account);
+		ib_add_account = (ImageButton) findViewById(R.id.ib_add_account);
+		ib_exit_soft = (ImageButton) findViewById(R.id.ib_exit_soft);
+		ib_del_account = (ImageButton) findViewById(R.id.ib_del_account);
 		sp = getSharedPreferences("name", MODE_PRIVATE);
 
 		AndroidHelper.autoBackground(this, layout, R.drawable.bg_w,
@@ -60,9 +61,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 		ImageButton iconSelectBtn = (ImageButton) findViewById(R.id.iconSelectBtn);
 		iconSelectBtn.setOnClickListener(this);
 		login.setOnClickListener(this);
-		ll_add_account.setOnClickListener(this);
-		ll_exit_soft.setOnClickListener(this);
-		ll_del_account.setOnClickListener(this);
+		ib_add_account.setOnClickListener(this);
+		ib_exit_soft.setOnClickListener(this);
+		ib_del_account.setOnClickListener(this);
 		initUser();
 	}
 
@@ -99,22 +100,29 @@ public class LoginActivity extends Activity implements OnClickListener {
 		case R.id.login:
 			goHome();
 			break;
-		case R.id.ll_add_account:
+		case R.id.ib_add_account:
+			System.out.println("add");
 			Intent intent = new Intent(this, AuthorizeActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.ll_exit_soft:
-			finish();
+		case R.id.ib_exit_soft:
+			//finish();
+			Process.killProcess(Process.myPid());
+			System.out.println("exit");
 			break;
-		case R.id.ll_del_account:
+		case R.id.ib_del_account:
 			String name = iconSelect.getText().toString();
 			if("".equals(name)){
-				Toast.makeText(this, "请选择用户", 0).show();
+				Toast.makeText(this, "请选择用户", Toast.LENGTH_SHORT).show();
 				break;
 			}
 			UserInfo userInfo = getUserByName(name);
 			dbHelper.DelUserInfo(userInfo.getUserId());
+			Editor editor = sp.edit();
+			editor.remove("name");
+			editor.commit();
 			initUser();
+			System.out.println("del");
 			break;
 		default:
 			break;
@@ -128,14 +136,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 			UserInfo userInfo = getUserByName(name);
 			if (Long.parseLong(userInfo.getExpiresTime()) < System
 					.currentTimeMillis()) {
-				Toast.makeText(LoginActivity.this, "授权日期已过，请重新授权", 0).show();
+				Toast.makeText(LoginActivity.this, "授权日期已过，请重新授权", Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(this, AuthorizeActivity.class);
 				startActivity(intent);
 				finish();
 				return;
 			}
 			if (userInfo != null) {
-				System.out.println(9999);
 				ConfigHelper.currentUser = userInfo;
 			}
 		}
@@ -164,7 +171,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private void initUser() {
 		dbHelper = new DataHelper(this);
 		userInfos = dbHelper.getUserList(false);
-		if (userInfos == null) {
+		if (userInfos == null || userInfos.size()<=0) {
 			Intent intent = new Intent(this, AuthorizeActivity.class);
 			startActivity(intent);
 		} else {

@@ -2,12 +2,14 @@ package com.hj.flappybird;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.Window;
@@ -22,10 +24,9 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//View view = View.inflate(this, R.layout.activity_main, null);
-		gameSurfaceView = new GameSurfaceView(this);
-		setContentView(gameSurfaceView);
+		setContentView(R.layout.activity_main);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		gameSurfaceView.setFocusable(true);
+		//gameSurfaceView.setFocusable(true);
 /*		gameSurfaceView = (GameSurfaceView) findViewById(R.id.sv_fb);
 		SurfaceHolder holder = gameSurfaceView.getHolder();
 		Canvas canvas = holder.lockCanvas();
@@ -41,5 +42,9 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	public void startGame(View view){
+		Intent intent = new Intent(MainActivity.this, GameViewActivity.class);
+		startActivity(intent);
+		
+	}
 }

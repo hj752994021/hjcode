@@ -20,6 +20,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
 	// 创建表
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		//integer primary key设置成这样，可以自增
 		db.execSQL("create table " + TB_NAME + "(" + UserInfo.ID
 				+ " integer primary key," + UserInfo.EXPIRESTIME + "  varchar,"
 				+ UserInfo.USERID + " varchar," + UserInfo.ACCESSTOKEN

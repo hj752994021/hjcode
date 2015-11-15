@@ -9,6 +9,7 @@ import android.view.WindowManager;
 public class AndroidHelper {
 	//获取屏幕方向
 	public static int getScreenOrient(Activity activity){
+		//获取 到清单文件中activity的属性android:screenOrientation="landscape"
 		int orient = activity.getRequestedOrientation();
 		if(orient != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE && orient != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
 			//宽>高为横屏,反之为竖屏

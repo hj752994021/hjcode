@@ -20,26 +20,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="#343434"
             android:text="我真的好想你"
+            android:textColor="#343434"
             android:textSize="15sp" />
 
         <ImageButton
             android:id="@+id/ib_wite_weibo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/ib_refresh"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignBottom="@+id/ib_refresh"
             android:layout_marginLeft="70dp"
-            android:background="@drawable/btn_write_selector" />
+            android:layout_toLeftOf="@+id/ib_refresh"
+            android:background="@drawable/imagebutton_seletor_write" />
 
         <ImageButton
             android:id="@+id/ib_refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="12dp"
-            android:background="@drawable/btn_refresh_selector" />
+            android:background="@drawable/imagebutton_seletor_refresh" />
     </RelativeLayout>
 
     <LinearLayout
@@ -61,39 +61,45 @@
             android:background="#BBFFFFFF"
             android:cacheColorHint="#00000000"
             android:divider="#ff8877"
-            android:dividerHeight="2dp" >
+            android:dividerHeight="5dp" >
         </ListView>
 
         <LinearLayout
-            android:id="@+id/loadingLayout"
+            android:id="@+id/ll_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:orientation="vertical"
-            android:visibility="invisible" >
+            android:visibility="visible" >
 
             <ProgressBar
                 android:id="@+id/pb_loading"
+                style="@style/progressStyle"
                 android:layout_width="31dp"
                 android:layout_height="31dp"
-                android:layout_gravity="center"
-                style="@style/progressStyle" />
-            <TextView android:layout_width="wrap_content"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="正在载入"
-                android:textSize="12dp"
-                android:textColor="#9c9c9c"
                 android:layout_gravity="center"
-                />
+                android:text="正在载入,请稍后"
+                android:textColor="@android:color/black"
+                android:textSize="12dp" />
         </LinearLayout>
 
-        <LinearLayout
+<!--         <LinearLayout
             android:id="@+id/toolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_alignParentBottom="true"
             android:orientation="horizontal" >
-        </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="个人资料" />
+        </LinearLayout> -->
     </RelativeLayout>
 
 </LinearLayout>

@@ -15,6 +15,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +26,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -86,16 +89,22 @@ public class AuthorizeActivity extends Activity {
 		btn_start.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				//点击开始，进入授权页面
 				weiboAuth.authorize(new AuthListener(),
 						WeiboAuth.OBTAIN_AUTH_CODE);
 			}
 		});
 		btn_cancel.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
+				finish();
+			}
+		});
+		//按下返回键时，，把activity也结束掉
+		dialog.setOnCancelListener(new OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				finish();
 			}
 		});
 	}
@@ -104,30 +113,30 @@ public class AuthorizeActivity extends Activity {
 
 		@Override
 		public void onCancel() {
-			Toast.makeText(AuthorizeActivity.this, "取消授权", 0).show();
+			Toast.makeText(AuthorizeActivity.this, "取消授权", Toast.LENGTH_SHORT).show();
 		}
 
 		@Override
 		public void onComplete(Bundle values) {
 			if (values == null) {
-				Toast.makeText(AuthorizeActivity.this, "oauthcode获取失败", 0)
+				Toast.makeText(AuthorizeActivity.this, "oauthcode获取失败", Toast.LENGTH_SHORT)
 						.show();
 				return;
 			}
 			String code = values.getString("code");
 			if (TextUtils.isEmpty(code)) {
-				Toast.makeText(AuthorizeActivity.this, "oauthcode获取失败", 0)
+				Toast.makeText(AuthorizeActivity.this, "oauthcode获取失败", Toast.LENGTH_SHORT)
 						.show();
 				return;
 			}
 			auth_code = code;
-			Toast.makeText(AuthorizeActivity.this, "oauthcode获取成功", 0).show();
+			Toast.makeText(AuthorizeActivity.this, "oauthcode获取成功", Toast.LENGTH_SHORT).show();
 			fetchTokenAsync(auth_code, WEIBO_DEMO_APP_SECRET);
 		}
 
 		@Override
 		public void onWeiboException(WeiboException e) {
-			Toast.makeText(AuthorizeActivity.this, "oauthcode异常", 0).show();
+			Toast.makeText(AuthorizeActivity.this, "oauthcode异常", Toast.LENGTH_SHORT).show();
 
 		}
 
@@ -248,10 +257,8 @@ public class AuthorizeActivity extends Activity {
 			bitmap = BitmapFactory.decodeStream(is);
 			is.close();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return bitmap;

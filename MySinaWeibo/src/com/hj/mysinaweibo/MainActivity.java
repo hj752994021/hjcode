@@ -20,7 +20,6 @@ import android.os.Handler;
 import android.widget.LinearLayout;
 
 import com.hj.mysinaweibo.commonutil.AndroidHelper;
-import com.hj.mysinaweibo.commonutil.ConfigHelper;
 import com.hj.mysinaweibo.commonutil.HttpApiHelper;
 import com.hj.mysinaweibo.model.UserInfo;
 import com.hj.mysinaweibo.sql.DataHelper;
@@ -52,7 +51,7 @@ public class MainActivity extends Activity {
 			Intent intent = new Intent(this, AuthorizeActivity.class);
 			startActivity(intent);
 		} else {
-			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+			Intent intent = new Intent(this, LoginActivity.class);
 			startActivity(intent);
 		}
 		finish();
