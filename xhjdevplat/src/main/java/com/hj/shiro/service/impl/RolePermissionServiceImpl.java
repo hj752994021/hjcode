@@ -55,7 +55,8 @@ public class RolePermissionServiceImpl extends BaseDao<RolePermission> implement
 		return permissions;
 	}
 	public List<Permission>  getPermissionsByUserId2(Integer userId){
-		String hql="select p from Permission  p, User u, UserRole ur,Role r,RolePermission rp where r.id=rp.roleId and rp.permissionId=p.id and r.id=ur.roleId and ur.userId=u.id and r.id=?";
-		return null;
+		String hql="select distinct p from Permission  p, User u, UserRole ur,Role r,RolePermission rp where r.id=rp.roleId and rp.permissionId=p.id and r.id=ur.roleId and ur.userId=u.id and u.id=?";
+		List<Permission> permissions = findByHql(hql, new Object[]{userId});
+		return permissions;
 	}
 }

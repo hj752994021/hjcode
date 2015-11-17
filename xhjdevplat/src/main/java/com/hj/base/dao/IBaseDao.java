@@ -18,11 +18,11 @@ public interface IBaseDao<T> {
 
 	public void saveOrUpdate(T entity);
 
-	public List<T> findByHql(String hql, Object[] values);
+	public <X> List<X> findByHql(String hql, Object[] values);
 
 	public List<Object[]> findBySql(String sql, Object[] values);
 
-	public List<T> findPageByHql(String hql, int pageNo, int pageSize, Object[] values);
+	public <X> List<X> findPageByHql(String hql, int pageNo, int pageSize, Object[] values);
 
 	public List<Object[]> findPageBySql(String hql, int pageNo, int pageSize, Object[] values);
 	

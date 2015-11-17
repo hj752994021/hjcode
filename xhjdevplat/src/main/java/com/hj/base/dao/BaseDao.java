@@ -54,7 +54,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 	}
 
 	@Transactional(readOnly = true)
-	public List<T> findByHql(String hql, Object[] values) {
+	public <X> List<X> findByHql(String hql, Object[] values) {
 		Query query = getCurrentSession().createQuery(hql);
 		if ((values != null) && (values.length > 0)) {
 			for (int i = 0; i < values.length; i++) {
@@ -76,7 +76,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 	}
 
 	@Transactional(readOnly = true)
-	public List<T> findPageByHql(String hql, int pageNo, int pageSize,
+	public <X> List<X> findPageByHql(String hql, int pageNo, int pageSize,
 			Object[] values) {
 		Query query = getCurrentSession().createQuery(hql);
 		query.setFirstResult((pageNo - 1) * pageSize).setMaxResults(
