@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -35,7 +36,10 @@ public class PermissionAction {
 		HttpServletResponse response = ServletActionContext.getResponse();
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String roleId = request.getParameter("roleId");
-		List<Permission> filterPermissions = rolePermissionService.getPermissionsByRoleId(Integer.parseInt(roleId));
+		List<Permission> filterPermissions = null;
+		if(!StringUtils.isEmpty(roleId)){
+			filterPermissions = rolePermissionService.getPermissionsByRoleId(Integer.parseInt(roleId));
+		}
 		JSONArray childPermissions = permissionService.getChildPermissions(-1,filterPermissions);
 		response.setContentType("application/json; charset=utf-8");
 		PrintWriter out = null;
