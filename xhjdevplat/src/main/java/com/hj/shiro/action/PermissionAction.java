@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
@@ -14,20 +15,28 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hj.shiro.model.Permission;
 import com.hj.shiro.model.Role;
+import com.hj.shiro.model.RolePermission;
 import com.hj.shiro.service.PermissionService;
+import com.hj.shiro.service.RolePermissionService;
 @Controller
 @Scope("prototype")
 public class PermissionAction {
 	@Resource
 	private PermissionService<Permission> permissionService;
+	@Resource
+	private RolePermissionService<RolePermission> rolePermissionService;
+
 	private Integer pageSize;
 	private Integer pageNo;
 	private Integer id;
 	private Permission permission;
 	private List<Permission> permissions;
 	public String easyPermissionsTree(){
-		JSONArray childPermissions = permissionService.getChildPermissions(-1);
 		HttpServletResponse response = ServletActionContext.getResponse();
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String roleId = request.getParameter("roleId");
+		List<Permission> filterPermissions = rolePermissionService.getPermissionsByRoleId(Integer.parseInt(roleId));
+		JSONArray childPermissions = permissionService.getChildPermissions(-1,filterPermissions);
 		response.setContentType("application/json; charset=utf-8");
 		PrintWriter out = null;
 		try {

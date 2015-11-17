@@ -16,7 +16,7 @@ public class RoleServiceImpl extends BaseDao<Role> implements RoleService<Role> 
 	@Resource
 	private RolePermissionService<RolePermission> rolePermissionService;
 	public void saveRoleWithPermission(Role role,String permissionIds){
-		save(role);
+		saveOrUpdate(role);
 		String[] permissionArr = permissionIds.split(",");
 		rolePermissionService.deleteRolePermissionByRoleId(role.getId());
 		for (int i = 0; i < permissionArr.length; i++) {

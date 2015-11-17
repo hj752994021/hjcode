@@ -19,7 +19,7 @@ public class PermissionServiceImpl extends BaseDao<Permission> implements
 		PermissionService<Permission> {
 	private UserRoleService<UserRole> userRoleService;
 
-	public JSONArray getChildPermissions(Integer parnetId){
+	public JSONArray getChildPermissions(Integer parnetId,List<Permission> filterPermissions){
 		List<Permission> permissions = findByHql("from Permission t where t.parentId=?", new Object[]{parnetId});
 		JSONArray perJsArr = null;
 		if(permissions!=null&&permissions.size()>0){
@@ -28,9 +28,15 @@ public class PermissionServiceImpl extends BaseDao<Permission> implements
 				JSONObject perJson = new JSONObject();
 				perJson.put("id", permission.getId());
 				perJson.put("text", permission.getName());
-				perJson.put("checked", true);
+				if(filterPermissions!=null&&filterPermissions.size()>0){
+					for (Permission filterPermission : filterPermissions) {
+						if(filterPermission.getId().equals(permission.getId())){
+							perJson.put("checked", true);
+						}
+					}
+				}
 				perJsArr.add(perJson);
-				JSONArray childJson = getChildPermissions(permission.getId());
+				JSONArray childJson = getChildPermissions(permission.getId(),filterPermissions);
 				perJson.put("children", childJson);
 			}
 		}

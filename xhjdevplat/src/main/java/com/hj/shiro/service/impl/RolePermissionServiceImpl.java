@@ -26,7 +26,7 @@ public class RolePermissionServiceImpl extends BaseDao<RolePermission> implement
 	private UserRoleService<UserRole> userRoleService;
 	
 	public int deleteRolePermissionByRoleId(Integer roleId){
-		SQLQuery sql = createSQLQuery("delete from role_permission rp where rp.roleId=?", roleId);
+		SQLQuery sql = createSQLQuery("delete rp from role_permission rp where rp.roleId=?", roleId);
 		return sql.executeUpdate();
 	}
 	public List<Permission> getPermissionsByRoleId(Integer roleId){
@@ -54,7 +54,7 @@ public class RolePermissionServiceImpl extends BaseDao<RolePermission> implement
 
 		return permissions;
 	}
-	public List<Permission>  getPermissionsByUserId(){
+	public List<Permission>  getPermissionsByUserId2(Integer userId){
 		String hql="select p from Permission  p, User u, UserRole ur,Role r,RolePermission rp where r.id=rp.roleId and rp.permissionId=p.id and r.id=ur.roleId and ur.userId=u.id and r.id=?";
 		return null;
 	}

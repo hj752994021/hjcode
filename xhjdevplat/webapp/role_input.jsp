@@ -23,9 +23,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 <script type="text/javascript">
 $(function(){
+var roleId = $("#roleId").val();
 $("#permissionTree").tree({
-	url:"permission_easyPermissionsTree.action",
-	checkbox:true
+	url:"permission_easyPermissionsTree.action?roleId="+roleId,
+	checkbox:true,
+	cascadeCheck:false
 });
 });
 function saveRole(){
@@ -47,7 +49,7 @@ function saveRole(){
   
 <body>
 <form id="roleForm" action="role_save.action" method="post">
-  <input type="hidden" name="role.id" value="${role.id }" />
+  <input type="hidden" id="roleId" name="role.id" value="${role.id }" />
   <input type="hidden" id="permissionIds" name="permissionIds" />
 	<table>
 		<tr>

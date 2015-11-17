@@ -33,7 +33,7 @@ public class HjTest {
 		//User user = userService.get(User.class, 1);
 		//System.out.println(user.getLoginName());
 		System.out.println(permission.getName());
-		JSONArray array = permissionService.getChildPermissions(-1);
-		System.out.println(array.toJSONString());
+		//JSONArray array = permissionService.getChildPermissions(-1);
+		//System.out.println(array.toJSONString());
 	}
 }
