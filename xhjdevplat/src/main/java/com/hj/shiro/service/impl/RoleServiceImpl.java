@@ -8,13 +8,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hj.base.dao.BaseDao;
 import com.hj.shiro.model.Role;
 import com.hj.shiro.model.RolePermission;
+import com.hj.shiro.model.User;
 import com.hj.shiro.service.RolePermissionService;
 import com.hj.shiro.service.RoleService;
+import com.hj.shiro.service.UserService;
 @Service("roleService")
 @Transactional
 public class RoleServiceImpl extends BaseDao<Role> implements RoleService<Role> {
 	@Resource
 	private RolePermissionService<RolePermission> rolePermissionService;
+	@Resource(name="userService")
+	private UserService<User> userService;
 	public void saveRoleWithPermission(Role role,String permissionIds){
 		saveOrUpdate(role);
 		String[] permissionArr = permissionIds.split(",");
